@@ -1,0 +1,1 @@
+uvicorn kavachMitra:app --reload

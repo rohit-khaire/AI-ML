@@ -1,0 +1,300 @@
+Aadhi: (500,19)
+Nantr: +4: Trip_Duration_Min, date, hour, dayOfWeek
+
+Integrity Ensure:
+All Cols: Num-Median and Cat-Mode
+Fare Amount: replace 0
+Long, Lat: Real and within New York- If not replace with median
+Re calc: Total
+DateTime datatype change from obj
+Ensure Date is of March 16
+
+
+2)
+
+a)
+The red box represents the middle 50% of the data. Most trips fall between roughly 1 mile and 4 miles.
+
+For the Histplot + KDE
+"The histogram shows that the trip distance is heavily right-skewed, with most trips concentrated under 5 miles. The KDE curve effectively smooths out the binning noise, revealing a multimodal distribution with a secondary peak around 18–20 miles."
+
+
+For the Boxplot
+"The boxplot identifies the median trip distance at approximately 2 miles, while the numerous points beyond the upper whisker indicate a high frequency of statistical outliers. These outliers represent long-distance trips that deviate significantly from the typical 1-4 mile interquartile range."
+
+
+
+
+
+
+b)
+
+Right skew (+ve skew) -> High to low (from left to right)
+
+The distribution is positively skewed, showing that the majority of revenue comes from low-cost trips under $15. However, the bimodal peak at $52 is a key insight, likely representing a standardized flat-rate fare for specific routes like airport transfers."
+
+
+
+
+
+
+
+c)
+
+"The categorical analysis reveals a class imbalance in the dataset, where Vendor 1 dominates the trip volume. Additionally, the payment distribution shows a clear preference for digital transactions, with credit card payments significantly outnumbering cash and other methods."
+
+
+
+
+
+
+
+d)
+The median fare (the line inside the blue boxes) remains relatively constant across different passenger counts (1 through 6). This suggests that the number of passengers doesn't significantly impact the fare.
+
+
+
+Strong Positive Correlation: The Scatter Plot shows a very clear linear relationship: as trip distance increases, the fare amount increases. This is exactly what we expect from a metered taxi service.
+
+Notice the horizontal line of dots at the $52 mark. Regardless of the distance (ranging from 15 to 20+ miles), the fare stays the same. This confirms our earlier theory about a fixed-price airport fare.
+
+Solo travellers are travelling far like airport.
+
+The scatter plot reveals a strong linear correlation between trip distance and fare, while also highlighting a fixed-rate fare tier at $52. Furthermore, the boxplot indicates that passenger count has a negligible effect on the median fare, suggesting the pricing model is distance-based rather than per-capita.
+
+
+
+
+
+
+
+e) 0=mindnight and 7=7AM, baki cha data cleaned madhe nighun gela
+
+The temporal analysis highlights a clear morning peak at 7 AM, with nearly double the trip volume compared to midnight. This suggests that commuter demand is a primary driver of service utilization within this specific subset of data
+
+
+
+
+
+
+
+f) heatmap
+In data science, it is primarily used to visualize correlation matrices, where darker or more intense colors signify a strong relationship between variables, while lighter colors indicate little to no relationship.
+
+
+
+Look from x axis and connect/relate with y axis
+
+
+
+
+3)
+
+Outlier detection: boxplot
+
+
+
+
+
+Handling: IQR, Zscore
+
+
+IQR: 
+Q3+1.5IQR
+Q1-1.5IQR
+
+
+
+
+Zscore:
+ZUpper: Mean + 3SD
+Zlower: Mean - 3SD
+
+
+
+
+
+The comparison demonstrates that removing outliers using the IQR method compressed the feature scale from $65 to $30, effectively eliminating the noise caused by flat-rate airport fares. This results in a more granular view of the primary distribution, though the data maintains its natural right-skewed characteristic.
+
+
+
+
+
+Exp4)
+
+Min Max Norm:
+Maps each value to [0, 1]:
+x_norm = (x − x_min) / (x_max − x_min)
+Best when you need values in a bounded range (e.g., neural networks, KNN).
+
+
+
+
+Z-Score Standardisation
+Centers data to mean=0 and std=1:
+x_std = (x − μ) / σ
+Best when the algorithm assumes a Gaussian distribution (e.g., linear/logistic regression, SVM, PCA).
+
+
+
+
+Both Min-Max Normalization and Z-Score Standardization are used to solve a common problem: "The Apple vs. Orange Comparison."
+
+In your taxi dataset, you have features with completely different scales. For example, passenger_count is a small number (1 to 6), but trip_distance could be 20+ miles. If you put these directly into a machine learning model, the model might "think" the larger numbers are more important just because they are bigger.
+
+Scaling puts them all on a "level playing field."
+
+1. Min-Max Normalization
+In simple terms: It squashes all your data into a fixed range, usually 0 to 1.
+
+Why use it? When you want all your features to have the exact same boundaries. 0 becomes the minimum, 1 becomes the maximum, and everything else sits in between.
+
+Best for: Algorithms that are sensitive to the magnitude of numbers, like Neural Networks or K-Nearest Neighbors (KNN).
+
+The Downside: It is very sensitive to outliers. If you have one trip that costs $1,000 by mistake, it will push all your normal $10 fares down to 0.01, ruining the resolution of your data.
+
+2. Z-Score Standardization
+In simple terms: It centers your data around 0 and measures how many "steps" (Standard Deviations) a point is away from the average.
+
+Why use it? It transforms the data so the mean is 0 and the standard deviation is 1. It doesn't have a fixed "end" point like 1.0.
+
+Best for: Algorithms that assume your data is normally distributed, like Linear Regression, Logistic Regression, or Principal Component Analysis (PCA).
+
+The Benefit: It handles outliers much better than Min-Max. An outlier will just have a very high Z-score (like 5.0 or 10.0), but it won't "crush" the rest of the data into a tiny range.
+
+Which one should you use for your Viva?
+For your specific project (Taxi Fares), Z-Score Standardization is often better because your data has many outliers (as we saw in your boxplots).
+
+One-line Viva answer:
+
+"We use scaling to ensure that features with larger numerical ranges don't dominate the model's learning process; Min-Max is used to bound data between 0 and 1, while Z-Score is preferred when we need to handle outliers more robustly by centering the data around a mean of zero."
+
+
+
+
+
+Scaling (Normalization or Standardization) is a linear transformation. It shifts and stretches the data but does not change its underlying distribution. If the data was skewed before, it stays skewed after.
+
+
+
+
+
+Visual:
+1. The Shape Preservation
+Insight: Notice that the "hills" and "valleys" are exactly the same in all three histograms.
+
+2. Min-Max Normalisation (Middle Chart)
+Insight: The X-axis is now strictly bounded between 0.0 and 1.0.
+
+Observation: The original minimum fare (near $0) became 0, and the maximum fare (near $28) became 1.
+
+Viva Note: Use this to explain that all features are now on the same scale, making it easier for distance-based algorithms (like KNN) to process them.
+
+3. Z-Score Standardised (Right Chart)
+Insight: The data is now centered around 0.
+
+Observation: The X-axis ranges from roughly -2 to +3.
+
+A value of 0 represents the average fare.
+
+A value of 1 means that fare is one "Standard Deviation" higher than the average.
+
+
+A Critical Question you might get:
+Examiner: "Looking at the Z-Score plot, why are there values below zero? Can a taxi fare be negative?"
+Your Answer: "No, the fare isn't negative. The negative values simply indicate that those specific fares are below the average fare of the dataset. Standardization shifts the mean to zero for mathematical convenience in machine learning."
+
+
+
+
+
+
+
+
+
+
+Exp 5)
+
+SMOTE was applied to address the class imbalance in payment types by generating synthetic samples for the minority class. This ensures the model is not biased toward the majority class and can learn the distinguishing features of both payment methods equally."
+
+
+
+Exp 6)
+Linear Reg Evaluation:
+R2 and MSE
+
+
+Logistic: Accuracy F1
+
+
+
+
+
+
+
+
+
+
+
+Exp 7)
+
+
+
+Low Residual Error: The "distance" between a blue dot and the red line is called a residual. Because the dots are hugging the line so closely, your Mean Squared Error (MSE) and Root Mean Squared Error (RMSE) are extremely low.
+
+
+
+
+Near-Perfect Linear Fit: The blue dots (your model's predictions) fall almost exactly on the red dashed line (the "Perfect Fit" line). This indicates that for this specific subset of data, your model has a very high $R^2$ value (likely above 0.95).
+
+
+
+The Actual vs. Predicted plot shows a strong linear alignment along the identity line, indicating that the model has captured the underlying patterns with minimal residual error. This suggests an exceptionally high coefficient of determination ($R^2$), proving the model is highly reliable for fare prediction."
+
+
+
+
+
+
+
+An examiner might look at this and ask: "Why are trip_distance and trip_duration at zero when they were so important in your earlier correlation heatmap?"
+
+The Answer: This is a classic case of Multicollinearity.
+Because fare_amount is calculated from distance and time, it is "stealing" all the mathematical importance. The model realizes that once it knows the fare_amount, knowing the trip_distance doesn't provide any new information. To fix this for a final model, you would typically remove the highly correlated fare_amount so the model is forced to learn from the raw trip_distance instead.
+
+
+
+
+pickup_hour is the only feature with a negative coefficient, indicating an inverse relationship with the total fare. This suggests that in this dataset, trips occurring earlier in the day tend to have higher total amounts—likely due to morning commuter or airport traffic—compared to trips occurring later in the evening.
+
+
+
+
+The KDE comparison reveals that Credit Card transactions have a higher mean fare of $10.29 compared to $9.97 for Cash. Both payment types follow a right-skewed distribution, indicating that while payment preferences overlap, card usage is slightly more dominant for higher-value fares.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
